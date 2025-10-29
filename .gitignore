@@ -106,3 +106,6 @@ jitfailure*
 # include test data directory
 !tests/data/
 !tests/data/*
+
+
+docs/sg_execution_times.rst

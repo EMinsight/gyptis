@@ -96,6 +96,6 @@ class Waveguide2D(Simulation):
         ):
             V0 = v[0] / Constant(kz)
             V1 = v[1] / Constant(kz)
-            V2 = v[2] / Complex(0, 1)
+            V2 = v[2] * Complex(0, 1)
             self.solution["eigenvectors"][i] = vector([V0, V1, V2])
         return self.solution
