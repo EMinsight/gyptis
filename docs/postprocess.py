@@ -171,7 +171,7 @@ def process_html(fn, lines):
         first_tag = '<span class="pre">Download</span> <span class="pre">archive</span>'
         reg = f"(?<={first_tag}).*?(?={second_tag})"
         line = re.sub(reg, "", line, flags=re.DOTALL)
-        # if icon_jupyter in line:
+
         if icon_download not in line:
             line = line.replace(first_tag, icon_download + first_tag)
 
