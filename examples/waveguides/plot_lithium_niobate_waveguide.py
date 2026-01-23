@@ -15,7 +15,6 @@ Periodically-poled lithium niobate ridge waveguide.
 """
 
 
-import time
 from collections import OrderedDict
 
 import matplotlib.pyplot as plt
@@ -25,8 +24,6 @@ from scipy.spatial.transform import Rotation
 import gyptis as gy
 import refidx as rd
 
-plt.ion()
-plt.close("all")
 
 
 ##############################################################################
@@ -191,21 +188,15 @@ def run(wls):
             wavenumber=wavenumber,
             degree=(1, 1),
         )
-        print(">>> Solving eigenmodes")
-        t = -time.time()
         simu.eigensolve(
             n_eig=n_eig,
             target=k_target,
             tol=1e-6,
             maximum_iterations=15,
         )
-        t += time.time()
-        print(f"solve time: {t:.2f}s")
-        print("")
         evs = simu.solution["eigenvalues"]
         modes = simu.solution["eigenvectors"]
         neff = evs / wavenumber
-        print("n_eff = ", neff)
         effective_indices[i, : len(neff)] = neff
         effective_indices[i, len(neff) :] = np.nan +1j*np.nan
         simus.append(simu)

@@ -14,7 +14,6 @@ Here we study an anisotropic square waveguide with various orientations of the o
 
 """
 
-import time
 from collections import OrderedDict
 
 import matplotlib.pyplot as plt
@@ -32,7 +31,7 @@ import gyptis as gy
 
 pi = np.pi
 
-ncore = 2.31
+ncore = 2.31**0.5
 nclad = nsub = 2.05**0.5
 
 pmesh = 8
@@ -131,24 +130,15 @@ def run(case):
             wavenumber=wavenumber,
             degree=(1, 1),
         )
-        print(">>> Solving eigenmodes")
-        t = -time.time()
         simu.eigensolve(
             n_eig=n_eig,
             target=k_target,
             tol=1e-6,
             maximum_iterations=15,
         )
-        t += time.time()
-        print(f"solve time: {t:.2f}s")
-        print("")
         evs = simu.solution["eigenvalues"]
         modes = simu.solution["eigenvectors"]
         neff = evs / wavenumber
-
-        # plt.plot(k0t[i] * np.ones(len(neff)), neff.real**2, ".", c="#be4848")
-        # plt.pause(0.1)
-        print("n_eff = ", neff)
         effective_indices[i, : len(neff)] = neff.real
         effective_indices[i, len(neff) :] = np.nan
         simus.append(simu)
