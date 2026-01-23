@@ -78,7 +78,7 @@ geom = gy.Layered(2, period, thicknesses)
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = geom.add_ellipse(0, y0, 0, ax, ay)
-rod, groove = geom.fragment(groove, rod)
+groove, rod = geom.fragment(groove, rod)
 geom.add_physical(rod, "rod")
 geom.add_physical(groove, "groove")
 mesh_size = {d: lambda0 / param for d, param in mesh_param.items()}
@@ -127,8 +127,8 @@ E = gratingTE.solution["total"]
 # reference
 T_ref = dict(TM=[0.2070, 1.0001], TE=[0.8187, 1.0001])
 
-
-print("Transmission coefficient")
+print("")
+print("Transmission coefficient (TM)")
 print(" order      ref       calc")
 print("--------------------------------")
 print(f"   0       {T_ref['TM'][0]:.4f}    {effs_TE['T'][1]:.4f} ")
@@ -164,7 +164,8 @@ fig.show()
 ######################################################################
 # Results are in good agreement with the reference
 
-print("Transmission coefficient")
+print("")
+print("Transmission coefficient (TE)")
 print(" order      ref       calc")
 print("--------------------------------")
 print(f"   0       {T_ref['TE'][0]:.4f}    {effs_TM['T'][1]:.4f} ")

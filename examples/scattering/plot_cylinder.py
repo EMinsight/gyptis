@@ -119,11 +119,11 @@ err_absorption = abs(cs_ana["absorption"] - cs["absorption"]) / cs["absorption"]
 err_extinction = abs(cs_ana["extinction"] - cs["extinction"]) / cs["extinction"]
 
 print()
-print("Errors")
+print("Relative errors")
 print("----------")
-print(f"scattering:  {100*err_scattering} %")
-print(f"absorption: {100*err_absorption} %")
-print(f"extinction: {100*err_extinction} %")
+print(f"scattering:  {100*err_scattering:.2f} %")
+print(f"absorption: {100*err_absorption:.2f} %")
+print(f"extinction: {100*err_extinction:.2f} %")
 assert err_absorption < 0.01
 assert err_scattering < 0.01
 assert err_extinction < 0.01

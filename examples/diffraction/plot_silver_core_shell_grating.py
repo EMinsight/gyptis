@@ -22,8 +22,6 @@ import numpy as np
 import gyptis as gy
 from gyptis import c, pi
 
-plt.ion()
-plt.close("all")
 ##############################################################################
 # Reference results are taken from :cite:p:`Jandieri2015`.
 # We first define a function for the Drude Lorentz model of silver permittivity.

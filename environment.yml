@@ -16,7 +16,7 @@ dependencies:
   - psutil
   - ipython
   - loguru
-  - gmsh
+  - gmsh>=4.15.0
   - python-gmsh
   - nlopt
   - pip:

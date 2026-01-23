@@ -48,7 +48,7 @@ for polarization in ["TM", "TE"]:
         box = geom.cut(box, cyl)
         geom.add_physical(box, "box")
         bnds = geom.get_boundaries("box")
-        cyl_bnds = bnds[1]
+        cyl_bnds = bnds[-1]
         geom.add_physical(cyl_bnds, "cyl_bnds", dim=1)
         [geom.set_size(pml, lmin * 0.7) for pml in geom.pmls]
         geom.set_size("box", lmin)

@@ -92,7 +92,7 @@ test = [
     "pytest-xdist[psutil]",
     "coverage"
 ]
-mesh = ["gmsh"]
+mesh = ["gmsh>=4.15.0"]
 opt = ["nlopt"]
 full = ["gyptis[docs]", "gyptis[dev]", "gyptis[test]", "gyptis[mesh]", "gyptis[opt]"]
 

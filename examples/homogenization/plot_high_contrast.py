@@ -204,7 +204,7 @@ geom = gy.Layered(2, d, thicknesses)
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = [geom.add_square(-a / 2, (d - a) / 2 + i * d, 0, a) for i in range(Nlayers)]
-*rod, groove = geom.fragment(groove, rod)
+groove, *rod = geom.fragment(groove, rod)
 geom.add_physical(rod, "rod")
 geom.add_physical(groove, "groove")
 mesh_size = {d: wavelength_min / param for d, param in mesh_param.items()}

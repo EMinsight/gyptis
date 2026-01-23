@@ -23,12 +23,6 @@ import pyvista
 
 import gyptis as gy
 
-# from ufl.algorithms.compute_form_data \
-#     import estimate_total_polynomial_degree
-
-# estimate_total_polynomial_degree(simu2D.formulation.weak)
-# estimate_total_polynomial_degree(simu3D.formulation.weak)
-
 ##############################################################################
 # We first define some parameters
 
@@ -97,8 +91,8 @@ def build_geometry(dim):
     out = geom.fragment([sub, sup, groove], pillar)
     sub = out[0]
     sup = out[1]
-    pillar = out[2]
-    groove = out[3:]
+    pillar = out[3]
+    groove = [out[2], out[4]]
     geom.add_physical(pillar, "rod")
     geom.add_physical(groove, "groove")
     geom.add_physical(sub, "substrate")
@@ -141,7 +135,6 @@ def init_simu(geom, polarization):
 ######################################################################
 # Main function
 
-
 def run(polarization):
     t2Dmesh = -time.time()
     geom2D = build_geometry(2)
@@ -179,40 +172,55 @@ def run(polarization):
     B3D = effs3D["B"]
 
     print()
-    print("=========================================")
-    print(f"             {polarization} polarization")
-    print("=========================================")
+    print("=======================================================")
+    print(f"                {polarization} polarization")
+    print("=======================================================")
     print()
-    print("                    2D           3D      ")
-    print("-----------------------------------------")
+    print("                    2D           3D        rel. err. ")
+    print("-------------------------------------------------------")
 
     print("Transmission")
     for k, i in enumerate(range(-nord, nord + 1)):
         i1 = f"+{i}" if i > 0 else i
         spacex = "" if i != 0 else " "
-        print(f"T({i1}) {spacex}            {T2D[k]:.5f}      {T3D[k]:.5f}  ")
-    print(f"T                 {sum(T2D):.5f}      {sum(T3D):.5f}  ")
+        rel_err = abs(1 - T2D[k] / T3D[k]) * 100
+        print(
+            f"T({i1}) {spacex}            {T2D[k]:.5f}      {T3D[k]:.5f}      {rel_err:.3f} %"
+        )
+    
+    rel_err = abs(1 - sum(T2D) / sum(T3D)) * 100
+    print(f"T                 {sum(T2D):.5f}      {sum(T3D):.5f}      {rel_err:.3f} %")
     print()
     print("Reflection")
     for k, i in enumerate(range(-1, 2), start=2):
         i1 = f"+{i}" if i > 0 else i
         spacex = "" if i != 0 else " "
-        print(f"R({i1}) {spacex}            {R2D[k]:.5f}      {R3D[k]:.5f}  ")
-    print(f"R                 {sum(R2D):.5f}      {sum(R3D):.5f}  ")
+        rel_err = abs(1 - R2D[k] / R3D[k]) * 100
+        print(f"R({i1}) {spacex}            {R2D[k]:.5f}      {R3D[k]:.5f}      {rel_err:.3f} %")
+    
+    rel_err = abs(1 - sum(R2D) / sum(R3D)) * 100
+    print(f"R                 {sum(R2D):.5f}      {sum(R3D):.5f}      {rel_err:.3f} %")
     print()
     print("Absorption")
-    print(f"Q                 {Q2D:.5f}      {Q3D:.5f}  ")
+    rel_err = abs(1 - (Q2D) / (Q3D)) * 100
+    print(f"Q                 {Q2D:.5f}      {Q3D:.5f}      {rel_err:.3f} %")
     print()
     print("Energy balance")
-    print(f"B                 {B2D:.5f}      {B3D:.5f}  ")
+    rel_err = abs(1 - (B2D) / (B3D)) * 100
+    print(f"B                 {B2D:.5f}      {B3D:.5f}      {rel_err:.3f} %")
     print()
+
+    print("                    2D           3D        reduction ")
+    print("-------------------------------------------------------")
     print("Number of DOF")
-    print(f"                   {simu2D.ndof}        {simu3D.ndof}  ")
+    print(f"                   {simu2D.ndof}        {simu3D.ndof}      x{simu3D.ndof/simu2D.ndof:.1f}  ")
     print()
+    print("                    2D           3D        speedup ")
+    print("-------------------------------------------------------")
     print("CPU time")
-    print(f"mesh               {t2Dmesh:.3f}s       {t3Dmesh:.3f}s  ")
-    print(f"solve              {t2Dsolve:.3f}s      {t3Dsolve:.3f}s  ")
-    print(f"efficiencies       {t2Deff:.3f}s       {t3Deff:.3f}s  ")
+    print(f"mesh               {t2Dmesh:.3f}s       {t3Dmesh:.3f}s      x{t3Dmesh/t2Dmesh:.1f}")
+    print(f"solve              {t2Dsolve:.3f}s       {t3Dsolve:.3f}s     x{t3Dsolve/t2Dsolve:.1f}")
+    print(f"efficiencies       {t2Deff:.3f}s       {t3Deff:.3f}s     x{t3Deff/t2Deff:.1f}")
 
     utot = simu2D.solution["total"].real
     gy.plot(utot)
