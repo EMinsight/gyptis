@@ -153,6 +153,7 @@ class Geometry:
             else:
                 gmsh.initialize()
 
+        # self.model.add(self.model_name)
         gmsh_options.set("General.Verbosity", self.verbose)
         gmsh_options.set("Mesh.Binary", self.binary_mesh)
 
@@ -193,6 +194,7 @@ class Geometry:
         self.model.removePhysicalName(name)
         self.model.setPhysicalName(dim, self.subdomains[dicname][name], name)
         return num
+
 
     def dimtag(self, idf, dim=None):
         """Convert an integer or list of integer to gmsh DimTag notation.
@@ -521,6 +523,9 @@ class Geometry:
     @property
     def msh_file(self):
         return os.path.join(self.data_dir, self.mesh_name)
+    @property
+    def geo_file(self):
+        return os.path.join(self.data_dir, self.model_name + ".geo_unrolled")
 
     def _build_serial(
         self,
@@ -648,6 +653,7 @@ class Geometry:
             self.model.mesh.generate(self.dim)
         if write:
             gmsh.write(self.msh_file)
+            gmsh.write(self.geo_file)
         if read:
             return self.read_mesh_file()
 

@@ -22,7 +22,7 @@ def grad_t(u):
     return vector([du[0], du[1], 0])
 
 
-class MaxwellWaveguide(Formulation):
+class MaxwellWaveguide2D(Formulation):
     def __init__(
         self,
         geometry,

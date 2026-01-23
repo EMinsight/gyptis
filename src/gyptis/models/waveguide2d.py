@@ -71,7 +71,7 @@ class Waveguide2D(Simulation):
         coefficients = epsilon_coeff, mu_coeff
         no_source_domains = pmls_list
         source_domains = []
-        formulation = MaxwellWaveguide(
+        formulation = MaxwellWaveguide2D(
             geometry,
             coefficients,
             function_space,

@@ -17,6 +17,8 @@ import numpy as np
 
 import gyptis as gy
 
+plt.ion()
+
 pmesh = 6
 degree = 2
 
@@ -38,7 +40,7 @@ def build_geo():
     )
     box = geom.box
     rods = [geom.add_circle(-N / 2 * d + i * d, 0, 0, R) for i in range(N)]
-    *rods, box = geom.fragment(box, rods)
+    box,*rods = geom.fragment(box, rods)
     geom.add_physical(box, "box")
     geom.add_physical(rods, "rods")
     [geom.set_size(pml, lmin * 0.7) for pml in geom.pmls]
@@ -48,7 +50,7 @@ def build_geo():
     return geom
 
 
-def run(geom, polarization):
+def init(geom, polarization):
     gb = gy.GaussianBeam(
         wavelength=wavelength,
         angle=gy.pi,
@@ -74,8 +76,6 @@ def run(geom, polarization):
         polarization=polarization,
     )
 
-    s.solve()
-
     return s
 
 
@@ -92,6 +92,8 @@ def plot_solution(s, title):
     plt.tight_layout()
 
 
+
+
 ##############################################################################
 # Build the geometry
 
@@ -101,12 +103,14 @@ geom = build_geo()
 ##############################################################################
 # TM polarization
 
-sTM = run(geom, "TM")
+sTM = init(geom, "TM")
+sTM.solve()
 plot_solution(sTM, "Electric field norm")
 
 
 ##############################################################################
 # TE polarization
 
-sTE = run(geom, "TE")
+sTE = init(geom, "TE")
+sTE.solve()
 plot_solution(sTE, "Magnetic field norm")

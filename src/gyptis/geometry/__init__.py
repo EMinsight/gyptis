@@ -14,3 +14,4 @@ from .phc2d import *
 from .phc3d import *
 from .scattering2d import *
 from .scattering3d import *
+from .waveguide2d import *

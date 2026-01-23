@@ -32,7 +32,7 @@ import gyptis as gy
 
 pi = np.pi
 
-ncore = 2.31**0.5
+ncore = 2.31
 nclad = nsub = 2.05**0.5
 
 pmesh = 8
@@ -55,6 +55,7 @@ thicknesses = OrderedDict(substrate=hsub, superstrate=hsup)
 geom = gy.geometry.LayeredBoxPML2D(
     box_width, thicknesses=thicknesses, pml_width=pml_width
 )
+
 sup = geom.layers["superstrate"]
 sub = geom.layers["substrate"]
 core = geom.add_rectangle(
