@@ -87,9 +87,9 @@ def build_geometry(wavelength, pmesh):
     y0 = geom.y_position["groove"]
     shell = geom.add_circle(0, y0 + R1, 0, R1)
     out = geom.fragment(shell, [groove, substrate, superstrate])
-    groove = out[3:]
-    substrate = out[1]
-    superstrate = out[2]
+    groove = out[1:3]
+    substrate = out[3]
+    superstrate = out[4]
     shell = out[0]
     core = geom.add_circle(0, y0 + R1, 0, R2)
     core, shell = geom.fragment(core, shell)
