@@ -1,4 +1,4 @@
-name: gyptis
+name: gyptis-debug
 channels:
   - conda-forge
 dependencies:

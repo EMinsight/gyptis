@@ -15,6 +15,19 @@ from math import e, pi
 import petsc4py
 from scipy.constants import c, epsilon_0, mu_0
 
+
+import sys
+
+# Auto-inject pkg_resources compatibility shim for Python 3.12+
+if sys.version_info >= (3, 12):
+    try:
+        import pkg_resources
+    except ModuleNotFoundError:
+        # Import our compatibility shim
+        # This will inject itself as 'pkg_resources' in sys.modules
+        from . import _pkg_resources_compat  # noqa: F401
+
+
 warnings.filterwarnings(
     "ignore",
     message="pkg_resources is deprecated",
