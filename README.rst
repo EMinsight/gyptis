@@ -32,7 +32,7 @@
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?logo=python&logoColor=e9d672&style=for-the-badge
   :alt: Code style: black
  
-.. |coverage| image:: https://img.shields.io/gitlab/coverage/gyptis/gyptis/master?logo=python&logoColor=e9d672&style=for-the-badge
+.. |coverage| image:: https://img.shields.io/gitlab/pipeline-coverage/gyptis%2Fgyptis?branch=masterlogo=python&logoColor=e9d672&style=for-the-badge
   :target: https://gitlab.com/gyptis/gyptis/commits/master
   :alt: coverage report 
 
