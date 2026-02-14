@@ -105,22 +105,22 @@ class BoxPML3D(Geometry):
             self.box = [box, sphere_calc]
 
         self.add_physical(box, "box")
-        self.add_physical(pmlx, "pmlx")
-        self.add_physical(pmly, "pmly")
-        self.add_physical(pmlz, "pmlz")
-        self.add_physical(pmlxy, "pmlxy")
-        self.add_physical(pmlyz, "pmlyz")
-        self.add_physical(pmlxz, "pmlxz")
-        self.add_physical(pml3, "pmlxyz")
+        self.add_physical(pmlx, "pml_x_box")
+        self.add_physical(pmly, "pml_y_box")
+        self.add_physical(pmlz, "pml_z_box")
+        self.add_physical(pmlxy, "pml_xy_box")
+        self.add_physical(pmlyz, "pml_yz_box")
+        self.add_physical(pmlxz, "pml_xz_box")
+        self.add_physical(pml3, "pml_xyz_box")
 
         self.pml_physical = [
-            "pmlx",
-            "pmly",
-            "pmlz",
-            "pmlxy",
-            "pmlyz",
-            "pmlxz",
-            "pmlxyz",
+            "pml_x_box",
+            "pml_y_box",
+            "pml_z_box",
+            "pml_xy_box",
+            "pml_yz_box",
+            "pml_xz_box",
+            "pml_xyz_box",
         ]
 
         if Rcalc > 0:

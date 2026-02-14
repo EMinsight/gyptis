@@ -6,11 +6,10 @@
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
-from .metaclasses import _GratingBase
 from .simulation import *
 
 
-class Grating3D(_GratingBase, Simulation):
+class MonoPeriodic3D(Simulation):
     def __init__(
         self,
         geometry,
@@ -42,18 +41,32 @@ class Grating3D(_GratingBase, Simulation):
         function_space = ComplexFunctionSpace(
             geometry.mesh, "N1curl", degree, constrained_domain=self.periodic_bcs
         )
-
-        names = geometry.domains.keys()
-        pmls_list = init_pmls(names, pml_stretch)
-        epsilon_coeff = Coefficient(
-            self.epsilon, geometry, pmls=pmls_list, degree=degree, dim=3
+        pml_bottom = PML(
+            "z",
+            stretch=pml_stretch,
+            matched_domain="substrate",
+            applied_domain="pml_bottom",
         )
-        mu_coeff = Coefficient(self.mu, geometry, pmls=pmls_list, degree=degree, dim=3)
+        pml_top = PML(
+            "z",
+            stretch=pml_stretch,
+            matched_domain="superstrate",
+            applied_domain="pml_top",
+        )
+
+        epsilon_coeff = Coefficient(
+            epsilon,
+            geometry,
+            pmls=[pml_bottom, pml_top],
+            degree=degree,
+            dim=3,
+        )
+        mu_coeff = Coefficient(
+            mu, geometry, pmls=[pml_bottom, pml_top], degree=degree, dim=3
+        )
 
         coefficients = epsilon_coeff, mu_coeff
-        no_source_domains = ["substrate", "superstrate"]
-        
-        no_source_domains += geometry.pml_physical
+        no_source_domains = ["substrate", "superstrate", "pml_bottom", "pml_top"]
         source_domains = [
             dom for dom in geometry.domains if dom not in no_source_domains
         ]
@@ -207,7 +220,7 @@ class Grating3D(_GratingBase, Simulation):
             / 2
         )
         doms_no_pml = [
-            z for z in self.epsilon.keys() if z not in self.geometry.pml_physical
+            z for z in self.epsilon.keys() if z not in ["pml_bottom", "pml_top"]
         ]
         Etot = self.solution["total"]
         # curl E = i ω μ_0 μ H

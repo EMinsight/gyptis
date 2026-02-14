@@ -15,16 +15,27 @@ class Layered2D(Geometry):
         self,
         period=1,
         thicknesses=OrderedDict(),
+        pml_thickness=(1, 1),
         **kwargs,
     ):
         super().__init__(
             dim=2,
             **kwargs,
         )
+
+        if isinstance(pml_thickness, (int, float)):
+            pml_thickness = (pml_thickness, pml_thickness)
+        thicknesses = thicknesses.copy()
+        layer_names = list(thicknesses.keys())
+        thicknesses["pml_y_" + layer_names[0]] = pml_thickness[0]
+        thicknesses.move_to_end("pml_y_" + layer_names[0], last=False)
+
+        thicknesses["pml_y_" + layer_names[-1]] = pml_thickness[1]
+        self.pml_physical = ["pml_y_" + layer_names[0], "pml_y_" + layer_names[-1]]
+        self.pml_thickness = pml_thickness
         self.period = period
         # assert isinstance(self.thicknesses == OrderedDict)
         self.thicknesses = thicknesses
-
         self.total_thickness = sum(self.thicknesses.values())
 
         self.y0 = -sum(list(self.thicknesses.values())[:2])

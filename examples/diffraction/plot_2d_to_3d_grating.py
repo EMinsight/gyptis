@@ -45,14 +45,12 @@ gy.dolfin.parameters["form_compiler"]["quadrature_degree"] = 4
 ##############################################################################
 # The thicknesses of the different layers are specified with an
 # ``OrderedDict`` object **from bottom to top**:
-
+pml_thickness = lambda0,lambda0
 thicknesses = OrderedDict(
     {
-        "pml_bottom": lambda0,
         "substrate": lambda0,
         "groove": h,
         "superstrate": lambda0,
-        "pml_top": lambda0,
     }
 )
 
@@ -62,12 +60,10 @@ thicknesses = OrderedDict(
 
 mesh_param = dict(
     {
-        "pml_bottom": 0.7 * pmesh * eps_diel**0.5,
         "substrate": pmesh * eps_diel**0.5,
         "groove": pmesh * eps_diel**0.5,
         "rod": pmesh * abs(eps_pillar.real) ** 0.5,
         "superstrate": pmesh,
-        "pml_top": 0.7 * pmesh,
     }
 )
 
@@ -78,11 +74,11 @@ mesh_param = dict(
 
 def build_geometry(dim):
     if dim == 2:
-        geom = gy.Layered(2, dy, thicknesses)
+        geom = gy.Layered(2, dy, thicknesses,pml_thickness)
         y0 = geom.y_position["groove"]
         pillar = geom.add_rectangle(-l_pillar / 2, y0, 0, l_pillar, h)
     else:
-        geom = gy.Layered(3, (dx, dy), thicknesses)
+        geom = gy.Layered(3, (dx, dy), thicknesses,pml_thickness)
         z0 = geom.z_position["groove"]
         pillar = geom.add_box(-dx / 2, -l_pillar / 2, z0, dx, l_pillar, h)
     groove = geom.layers["groove"]
@@ -97,6 +93,8 @@ def build_geometry(dim):
     geom.add_physical(groove, "groove")
     geom.add_physical(sub, "substrate")
     geom.add_physical(sup, "superstrate")
+    lmin = lambda0 / pmesh
+    [geom.set_size(pml, lmin) for pml in geom.pml_physical]
     mesh_size = {d: lambda0 / param for d, param in mesh_param.items()}
     geom.set_mesh_size(mesh_size)
     geom.build(interactive=False)

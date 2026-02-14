@@ -494,16 +494,13 @@ def make_stack(
         for dom in source_domains:
             estack[dom] = estack["superstrate"]
 
-        # estack["pml_bottom"] = estack["substrate"]
-        # estack["pml_top"] = estack["superstrate"]
-
-        estack["pml_top"] = estack["pml_bottom"] = Complex(0, 0)
-
-        # estack["pml_bottom"] = estack["pml_top"]= Complex(0, 0)
         e0 = {"superstrate": u_0}
         for dom in source_domains:
             e0[dom] = e0["superstrate"]
-        e0["substrate"] = e0["pml_bottom"] = e0["pml_top"] = Complex(0, 0)
+        e0["substrate"] = Complex(0, 0)
+
+        for dom in geometry.pml_physical:
+            estack[dom] = e0[dom] = Complex(0, 0)
 
         ustack_coeff = Subdomain(
             geometry.markers,
@@ -552,14 +549,13 @@ def make_stack(
             for dom in source_domains:
                 estack[dom] = estack["superstrate"]
 
-            # estack["pml_bottom"] = estack["substrate"]
-            # estack["pml_top"] = estack["superstrate"]
-            estack["pml_bottom"] = estack["pml_top"] = Complex(0, 0)
-
             e0 = {"superstrate": u_0}
             for dom in source_domains:
                 e0[dom] = e0["superstrate"]
-            e0["substrate"] = e0["pml_bottom"] = e0["pml_top"] = Complex(0, 0)
+            e0["substrate"] = Complex(0, 0)
+
+            for dom in geometry.pml_physical:
+                estack[dom] = e0[dom] = Complex(0, 0)
 
             _ustack_coeff = Subdomain(
                 geometry.markers,

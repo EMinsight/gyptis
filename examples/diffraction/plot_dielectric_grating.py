@@ -46,11 +46,9 @@ theta0 = 20  # in degrees
 
 thicknesses = OrderedDict(
     {
-        "pml_bottom": lambda0,
         "substrate": lambda0,
         "groove": 2 * ay * 1.5,
         "superstrate": lambda0,
-        "pml_top": lambda0,
     }
 )
 
@@ -62,25 +60,24 @@ pmesh = 10
 pmesh_rod = pmesh * 2
 mesh_param = dict(
     {
-        "pml_bottom": 0.7 * pmesh,
         "substrate": pmesh,
         "groove": pmesh,
         "rod": pmesh_rod * n_rod,
         "superstrate": pmesh,
-        "pml_top": 0.7 * pmesh,
     }
 )
 
 ##############################################################################
 # Let's create the geometry using the :class:`~gyptis.Layered`
 # class:
-geom = gy.Layered(2, period, thicknesses)
+geom = gy.Layered(2, period, thicknesses, pml_thickness=(lambda0, lambda0))
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = geom.add_ellipse(0, y0, 0, ax, ay)
 groove, rod = geom.fragment(groove, rod)
 geom.add_physical(rod, "rod")
 geom.add_physical(groove, "groove")
+[geom.set_size(pml, lambda0 / pmesh) for pml in geom.pml_physical]
 mesh_size = {d: lambda0 / param for d, param in mesh_param.items()}
 geom.set_mesh_size(mesh_size)
 geom.build()
@@ -147,7 +144,7 @@ H = gratingTM.solution["total"]
 # Let's visualize the fields
 
 fig, ax = plt.subplots(1, 2)
-ylim = geom.y_position["substrate"], geom.y_position["pml_top"]
+ylim = geom.y_position["substrate"], geom.y_position["pml_y_superstrate"]
 gratingTE.plot_field(ax=ax[0])
 gratingTE.plot_geometry(ax=ax[0])
 ax[0].set_ylim(ylim)

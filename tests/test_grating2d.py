@@ -34,11 +34,9 @@ def test_grating2d(polarization, degree):
 
     thicknesses = OrderedDict(
         {
-            "pml_bottom": wavelength,
             "substrate": wavelength,
             "groove": 3 * R,
             "superstrate": wavelength,
-            "pml_top": wavelength,
         }
     )
 
@@ -51,13 +49,13 @@ def test_grating2d(polarization, degree):
     epsilon = dict({"substrate": 1, "groove": 1, "superstrate": 1, "diff": eps_diff})
     mu = dict({"substrate": 1.6, "groove": mu_groove, "superstrate": 1, "diff": 1})
 
-    geom = Layered(2, period, thicknesses)
+    geom = Layered(2, period, thicknesses, wavelength)
     yc = geom.y_position["groove"] + thicknesses["groove"] / 2
     diff = geom.add_circle(0, yc, 0, R)
     diff, groove = geom.fragment(diff, geom.layers["groove"])
     geom.add_physical(diff, "diff")
     geom.add_physical(groove, "groove")
-    [geom.set_size(pml, lmin) for pml in ["pml_bottom", "pml_top"]]
+    [geom.set_size(pml, lmin) for pml in geom.pml_physical]
     geom.set_size("groove", lmin)
     geom.set_size("diff", lmin)
     geom.set_size("superstrate", lmin)
@@ -116,11 +114,9 @@ def test_grating2dpec(polarization, degree):
     lmin_pec = h / (pmesh * 2)
     thicknesses = OrderedDict(
         {
-            "pml_bottom": wavelength,
             "substrate": wavelength,
             "groove": wavelength,
             "superstrate": wavelength,
-            "pml_top": wavelength,
         }
     )
     rot = Rotation.from_euler("zyx", [20, 0, 0], degrees=True)
@@ -131,7 +127,7 @@ def test_grating2dpec(polarization, degree):
     epsilon = dict({"substrate": 1.7, "groove": eps_groove, "superstrate": 1})
     mu = dict({"substrate": 1.2, "groove": mu_groove, "superstrate": 1})
 
-    geom = Layered2D(period, thicknesses)
+    geom = Layered2D(period, thicknesses,wavelength)
 
     yc = geom.y_position["groove"] + thicknesses["groove"] / 2
     diff = geom.add_ellipse(0, yc, 0, w / 2, h / 2)
@@ -141,7 +137,7 @@ def test_grating2dpec(polarization, degree):
     bnds = geom.get_boundaries("groove")
     geom.add_physical(bnds[-1], "hole", dim=1)
 
-    for dom in ["substrate", "superstrate", "pml_bottom", "pml_top", "groove"]:
+    for dom in ["substrate", "superstrate", "groove"] + geom.pml_physical:
         geom.set_size(dom, lmin)
 
     geom.set_size("hole", lmin_pec, dim=1)

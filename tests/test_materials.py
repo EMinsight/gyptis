@@ -135,9 +135,9 @@ def test_coefficient():
     epsilon = dict(box=1, cyl=3)
     eps = Coefficient(epsilon)
 
-    pmlx = PML("x", stretch=1 - 1j, matched_domain="box", applied_domain="pmlx")
-    pmly = PML("y", stretch=1 - 1j, matched_domain="box", applied_domain="pmly")
-    pmlxy = PML("xy", stretch=1 - 1j, matched_domain="box", applied_domain="pmlxy")
+    pmlx = PML("x", stretch=1 - 1j, matched_domain="box", applied_domain="pml_x_box")
+    pmly = PML("y", stretch=1 - 1j, matched_domain="box", applied_domain="pml_y_box")
+    pmlxy = PML("xy", stretch=1 - 1j, matched_domain="box", applied_domain="pml_xy_box")
 
     eps = Coefficient(epsilon, geometry=geom, pmls=[pmlx, pmly, pmlxy])
     eps.apply_pmls()

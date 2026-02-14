@@ -34,33 +34,10 @@ class Waveguide2D(Simulation):
         element = dolfin.MixedElement([Element1, Element2])
 
         function_space = ComplexFunctionSpace(geometry.mesh, element)
-        names = list(geometry.layers.keys())
+        
 
-        pmls_list = []
-        for name in names:
-            pmlx = PML(
-                "x",
-                stretch=pml_stretch,
-                matched_domain=name,
-                applied_domain="pmlx_" + name,
-            )
-            pmls_list.append(pmlx)
-        for name in [names[-1], names[0]]:
-            pmly = PML(
-                "y",
-                stretch=pml_stretch,
-                matched_domain=name,
-                applied_domain="pmly_" + name,
-            )
-            pmls_list.append(pmly)
-            pmlxy = PML(
-                "xy",
-                stretch=pml_stretch,
-                matched_domain=name,
-                applied_domain="pmlxy_" + name,
-            )
-            pmls_list.append(pmlxy)
-
+        names = geometry.domains.keys()
+        pmls_list = init_pmls(names,pml_stretch)
         degree_mat = max(degree)
 
         epsilon_coeff = Coefficient(

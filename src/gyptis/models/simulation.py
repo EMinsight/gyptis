@@ -42,6 +42,23 @@ def init_em_materials(geometry, epsilon=None, mu=None):
     mu = _complexify_items(mu)
     return epsilon, mu
 
+def init_pmls(names,pml_stretch):
+    pmls_list = []
+    for name in names:
+        if name.startswith("pml"):
+            splt = name.split("_")
+            if len(splt) < 3:
+                raise ValueError("PML name must be of the form pml_type_matched")
+            pml_type, *matched = splt[1:]
+            matched = "_".join(matched)
+            pml = PML(
+                pml_type,
+                stretch=pml_stretch,
+                matched_domain=matched,
+                applied_domain=name,
+            )
+            pmls_list.append(pml)
+    return pmls_list
 
 class Simulation:
     def __init__(self, geometry, formulation=None, direct=True, solver=None):

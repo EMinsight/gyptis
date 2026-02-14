@@ -26,7 +26,7 @@ import gyptis as gy
 #
 
 lambda0 = 600
-theta0 = 20
+theta0 = -20
 
 period = 800
 h = 8
@@ -36,28 +36,24 @@ pmesh = 10
 
 thicknesses = OrderedDict(
     {
-        "pml_bottom": 1 * lambda0,
         "substrate": 1 * lambda0,
         "groove": 20 * h,
         "superstrate": 1 * lambda0,
-        "pml_top": 1 * lambda0,
     }
 )
 
 mesh_param = dict(
     {
-        "pml_bottom": 0.7 * pmesh,
         "substrate": pmesh,
         "groove": pmesh,
         "superstrate": pmesh,
-        "pml_top": 0.7 * pmesh,
     }
 )
 
 ######################################################################
 # Let's create the geometry
 
-geom = gy.Layered(2, period, thicknesses)
+geom = gy.Layered(2, period, thicknesses, pml_thickness=(lambda0, lambda0))
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = geom.add_ellipse(0, y0, 0, w / 2, h / 2)
@@ -69,6 +65,7 @@ mesh_size = {d: lambda0 / param for d, param in mesh_param.items()}
 
 rod_bnds = geom.get_boundaries("groove")[-1]
 geom.add_physical(rod_bnds, "rod_bnds", dim=1)
+[geom.set_size(pml, lambda0 / pmesh) for pml in geom.pml_physical]
 geom.set_mesh_size(mesh_size)
 geom.set_mesh_size({"rod_bnds": h / 8}, dim=1)
 
@@ -80,7 +77,7 @@ geom.build(
 )
 
 
-domains = [k for k in thicknesses.keys() if k not in ["pml_bottom", "pml_top"]]
+domains = [k for k in thicknesses.keys() if k not in geom.pml_physical]
 
 epsilon = {d: 1 for d in domains}
 mu = {d: 1 for d in domains}
@@ -134,7 +131,7 @@ H = gratingTE.solution["total"]
 
 
 fig, ax = plt.subplots(1, 2)
-ylim = geom.y_position["substrate"], geom.y_position["pml_top"]
+ylim = geom.y_position["substrate"], geom.y_position["pml_y_superstrate"]
 gratingTM.plot_field(ax=ax[0])
 gratingTM.plot_geometry(ax=ax[0])
 ax[0].set_ylim(ylim)

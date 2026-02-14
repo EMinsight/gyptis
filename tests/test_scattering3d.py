@@ -56,7 +56,7 @@ def test_scatterring3d(shared_datadir):
         s = min(lambda0 / pmesh, smin)
         smin_pml = lambda0 / (0.66 * pmesh)
         for coord in ["x", "y", "z", "xy", "xz", "yz", "xyz"]:
-            g.set_mesh_size({f"pml{coord}": smin_pml})
+            g.set_mesh_size({f"pml_{coord}_box": smin_pml})
 
         g.set_size(box, s)
         g.set_size(sphere_cross_sections, s)

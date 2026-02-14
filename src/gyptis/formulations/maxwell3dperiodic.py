@@ -41,12 +41,20 @@ class Maxwell3DPeriodic(Maxwell3D):
 
     @property
     def weak(self):
-        u1 = self.annex_field["as_subdomain"]["stack"]
+        u1 = (
+            Constant((0, 0, 0))
+            if self.modal
+            else self.annex_field["as_subdomain"]["stack"]
+        )
         u = self.trial * self.phasor
         v = self.test * self.phasor.conj
         return self._weak(u, v, u1)
 
     def build_boundary_conditions(self):
-        applied_function = -self.annex_field["as_subdomain"]["stack"] * self.phasor.conj
+        applied_function = (
+            Constant((0, 0, 0))
+            if self.modal
+            else -self.annex_field["as_subdomain"]["stack"] * self.phasor.conj
+        )
         self._boundary_conditions = self.build_pec_boundary_conditions(applied_function)
         return self._boundary_conditions

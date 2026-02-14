@@ -84,9 +84,9 @@ class BoxPML2D(Geometry):
         self.fragment(self.box, self.pmls)
 
         self.pml_physical = [
-            "pmlx",
-            "pmly",
-            "pmlxy",
+            "pml_x_box",
+            "pml_y",
+            "pml_xy_box",
         ]
 
         if Rcalc > 0:
@@ -95,9 +95,9 @@ class BoxPML2D(Geometry):
             self.box = [box, cyl_calc]
 
         self.add_physical(box, "box")
-        self.add_physical([pmlxp, pmlxm], "pmlx")
-        self.add_physical([pmlyp, pmlym], "pmly")
-        self.add_physical([pmlxypp, pmlxypm, pmlxymm, pmlxymp], "pmlxy")
+        self.add_physical([pmlxp, pmlxm], "pml_x_box")
+        self.add_physical([pmlyp, pmlym], "pml_y_box")
+        self.add_physical([pmlxypp, pmlxypm, pmlxymm, pmlxymp], "pml_xy_box")
 
         if Rcalc > 0:
             bnds = self.get_boundaries("box")

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:36.321** total execution time for 20 files **from all galleries**:
+**01:48.419** total execution time for 20 files **from all galleries**:
 
 .. container::
 
@@ -32,9 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_examples_waveguides_plot_lithium_niobate_waveguide.py` (``../examples/waveguides/plot_lithium_niobate_waveguide.py``)
-     - 00:36.321
-     - 1709.2
+   * - :ref:`sphx_glr_examples_homogenization_plot_high_contrast.py` (``../examples/homogenization/plot_high_contrast.py``)
+     - 01:48.419
+     - 487.6
    * - :ref:`sphx_glr_examples_diffraction_plot_2d_to_3d_grating.py` (``../examples/diffraction/plot_2d_to_3d_grating.py``)
      - 00:00.000
      - 0.0
@@ -53,9 +53,6 @@ Computation times
    * - :ref:`sphx_glr_examples_homogenization_plot_four_phase.py` (``../examples/homogenization/plot_four_phase.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_examples_homogenization_plot_high_contrast.py` (``../examples/homogenization/plot_high_contrast.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_examples_homogenization_plot_homogenization.py` (``../examples/homogenization/plot_homogenization.py``)
      - 00:00.000
      - 0.0
@@ -71,10 +68,10 @@ Computation times
    * - :ref:`sphx_glr_examples_scattering_plot_ldos.py` (``../examples/scattering/plot_ldos.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_examples_scattering_plot_nanorod.py` (``../examples/scattering/plot_nanorod.py``)
+   * - :ref:`sphx_glr_examples_scattering_plot_nanorods.py` (``../examples/scattering/plot_nanorods.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_examples_scattering_plot_scattering2d_pec_cylinder.py` (``../examples/scattering/plot_scattering2d_pec_cylinder.py``)
+   * - :ref:`sphx_glr_examples_scattering_plot_pec_cylinder.py` (``../examples/scattering/plot_pec_cylinder.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_examples_scattering_plot_silver_core_shell.py` (``../examples/scattering/plot_silver_core_shell.py``)
@@ -84,6 +81,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_examples_waveguides_plot_anisotropic_waveguide.py` (``../examples/waveguides/plot_anisotropic_waveguide.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_examples_waveguides_plot_lithium_niobate_waveguide.py` (``../examples/waveguides/plot_lithium_niobate_waveguide.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_tutorials_plot_basic.py` (``../tutorials/plot_basic.py``)

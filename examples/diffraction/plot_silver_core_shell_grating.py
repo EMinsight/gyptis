@@ -63,11 +63,9 @@ wavelength = 452
 def build_geometry(wavelength, pmesh):
     thicknesses = OrderedDict(
         {
-            "pml_bottom": wavelength,
             "substrate": wavelength * 1,
             "groove": 2 * R1,
             "superstrate": wavelength * 1,
-            "pml_top": wavelength,
         }
     )
     lmin = wavelength / pmesh
@@ -78,7 +76,7 @@ def build_geometry(wavelength, pmesh):
     ncore = (eps_core.real) ** 0.5
     nsubstrate = (eps_substrate.real) ** 0.5
 
-    geom = gy.Layered(2, period, thicknesses)
+    geom = gy.Layered(2, period, thicknesses, pml_thickness=(wavelength, wavelength))
     groove = geom.layers["groove"]
     substrate = geom.layers["substrate"]
     superstrate = geom.layers["superstrate"]
@@ -96,7 +94,7 @@ def build_geometry(wavelength, pmesh):
     geom.add_physical(groove, "groove")
     geom.add_physical(core, "core")
     geom.add_physical(shell, "shell")
-    [geom.set_size(pml, lmin) for pml in ["pml_bottom", "pml_top"]]
+    [geom.set_size(pml, lmin) for pml in geom.pml_physical]
     geom.set_size("superstrate", lmin)
     geom.set_size("groove", lmin)
     geom.set_size("core", lmin / ncore)

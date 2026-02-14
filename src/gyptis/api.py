@@ -69,7 +69,7 @@ class BoxPML(Geometry):
 
 
 class Layered(Geometry):
-    """Layered(dim, period, thicknesses, **kwargs)
+    """Layered(dim, period, thicknesses, pml_thickness, **kwargs)
     Layered media for diffraction problems, defining the periodic unit cell
     for mono or bi periodic gratings.
 
@@ -84,6 +84,8 @@ class Layered(Geometry):
     thicknesses : :class:`~collections.OrderedDict`
         Dictionary containing physical names and thicknesses from bottom to top.
         (``thicknesses["phyiscal_name"]=thickness_value``)
+    pml_thickness: tuple
+        Thickness of the PMLs (substrate, superstrate).
     **kwargs : dictionary
         Additional parameters. See the parent class :class:`~gyptis.Geometry`.
 
@@ -93,15 +95,16 @@ class Layered(Geometry):
 
     >>> from collections import OrderedDict
     >>> from gyptis import Layered
-    >>> t = OrderedDict(pml_bot=1, slab=3, pml_top=1)
-    >>> lays = Layered(dim=2, period=1.3, thicknesses=t)
+    >>> t = OrderedDict(pml_bot=1, slab=3)
+    >>> lays = Layered(dim=2, period=1.3, thicknesses=t, pml_thickness=(1,2))
     >>> lays.build()
 
     """
 
-    def __new__(cls, dim=3, *args, **kwargs):
+    def __new__(cls, dim=3, period=None, thicknesses=None, pml_thickness=None, **kwargs):
         _check_dimension(dim)
-        return Layered3D(*args, **kwargs) if dim == 3 else Layered2D(*args, **kwargs)
+        _Class = Layered3D if dim == 3 else Layered2D
+        return _Class(period, thicknesses, pml_thickness, **kwargs)
 
 
 class Lattice(Geometry):

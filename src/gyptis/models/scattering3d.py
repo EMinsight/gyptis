@@ -32,37 +32,27 @@ class Scatt3D(_ScatteringBase, Simulation):
         assert source.dim == 3
         self.epsilon, self.mu = init_em_materials(geometry, epsilon, mu)
         function_space = ComplexFunctionSpace(geometry.mesh, element, degree)
-        pmls = []
-        pml_names = []
-        for direction in ["x", "y", "z", "xy", "yz", "xz", "xyz"]:
-            pml_name = f"pml{direction}"
-            pml_names.append(pml_name)
-            pmls.append(
-                PML(
-                    direction,
-                    stretch=pml_stretch,
-                    matched_domain="box",
-                    applied_domain=pml_name,
-                )
-            )
+
+        names = geometry.domains.keys()
+        pmls_list = init_pmls(names,pml_stretch)
 
         epsilon_coeff = Coefficient(
             self.epsilon,
             geometry,
-            pmls=pmls,
+            pmls=pmls_list,
             degree=degree,
             dim=3,
         )
         mu_coeff = Coefficient(
             self.mu,
             geometry,
-            pmls=pmls,
+            pmls=pmls_list,
             degree=degree,
             dim=3,
         )
 
         coefficients = epsilon_coeff, mu_coeff
-        no_source_domains = ["box"] + pml_names
+        no_source_domains = ["box"] + geometry.pml_physical
         source_domains = [
             dom for dom in geometry.domains if dom not in no_source_domains
         ]

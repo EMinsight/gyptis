@@ -49,11 +49,9 @@ l_pillar = dy / 2
 
 thicknesses = OrderedDict(
     {
-        "pml_bottom": lambda0,
         "substrate": lambda0 * 1,
         "groove": h,
         "superstrate": lambda0 * 1,
-        "pml_top": lambda0,
     }
 )
 
@@ -79,7 +77,7 @@ mesh_param = dict(
 ##############################################################################
 # Let's create the geometry using the :class:`~gyptis.Layered`
 # class:
-geom = gy.Layered(3, (dx, dy), thicknesses)
+geom = gy.Layered(3, (dx, dy), thicknesses,lambda0)
 z0 = geom.z_position["groove"]  # + h/10
 # pillar = geom.add_box(-l_pillar / 2, -l_pillar / 2, z0, l_pillar, l_pillar, h)
 pillar = geom.add_box(-dx / 2, -l_pillar / 2, z0, dx, l_pillar, h)

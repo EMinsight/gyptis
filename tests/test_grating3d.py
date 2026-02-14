@@ -33,11 +33,9 @@ def test_grating3d(degree=1):
     hole_radius = p / 4
     thicknesses = OrderedDict(
         {
-            "pml_bottom": lambda0,
             "substrate": lambda0 / 1,
             "groove": grooove_thickness,
             "superstrate": lambda0 / 1,
-            "pml_top": lambda0,
         }
     )
 
@@ -51,12 +49,10 @@ def test_grating3d(degree=1):
 
     mesh_params = dict(
         {
-            "pml_bottom": parmesh_pml,
             "substrate": parmesh,
             "groove": parmesh_groove,
             "hole": parmesh_hole,
             "superstrate": parmesh,
-            "pml_top": parmesh_pml,
         }
     )
 
@@ -82,7 +78,7 @@ def test_grating3d(degree=1):
         for e, m in zip(epsilon.items(), mu.items())
     }
     #  ---------- build geometry ----------
-    geom = Layered(3, period, thicknesses, finalize=False)
+    geom = Layered(3, period, thicknesses, lambda0, finalize=False)
 
     groove = geom.layers["groove"]
     substrate = geom.layers["substrate"]
@@ -107,9 +103,7 @@ def test_grating3d(degree=1):
     geom.add_physical(hole, "hole")
     geom.add_physical(substrate, "substrate")
     geom.add_physical(superstrate, "superstrate")
-
-    index["pml_top"] = index["substrate"]
-    index["pml_bottom"] = index["substrate"]
+    [geom.set_size(pml, lambda0 / parmesh_pml) for pml in geom.pml_physical]
     pmesh = {k: lambda0 / (index[k] * mesh_params[k]) for k in mesh_params}
     geom.set_mesh_size(pmesh)
     geom.build()

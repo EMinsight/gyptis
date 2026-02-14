@@ -12,24 +12,29 @@ from .geometry import *
 class Layered3D(Geometry):
     def __init__(
         self,
-        period=(1.0, 1.0),
-        thicknesses=None,
+        period = (1,1),
+        thicknesses=OrderedDict(),
+        pml_thickness=(1, 1),
         **kwargs,
     ):
         super().__init__(
             dim=3,
             **kwargs,
         )
+        if isinstance(period, (int, float)):
+            period = (period, period)
+        if isinstance(pml_thickness, (int, float)):
+            pml_thickness = (pml_thickness, pml_thickness)
+        thicknesses = thicknesses.copy()
+        layer_names = list(thicknesses.keys())
+        thicknesses["pml_z_" + layer_names[0]] = pml_thickness[0]
+        thicknesses.move_to_end("pml_z_" + layer_names[0], last=False)
+
+        thicknesses["pml_z_" + layer_names[-1]] = pml_thickness[1]
+        self.pml_physical = ["pml_z_" + layer_names[0], "pml_z_" + layer_names[-1]]
+        self.pml_thickness = pml_thickness
         self.period = period
-        self.thicknesses = thicknesses or OrderedDict(
-            {
-                "pml_bottom": 1,
-                "substrate": 1,
-                "groove": 2,
-                "superstrate": 1,
-                "pml_top": 1,
-            }
-        )
+        self.thicknesses = thicknesses
 
         self.periodic_tol = 1e-6
 

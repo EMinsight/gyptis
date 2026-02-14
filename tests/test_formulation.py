@@ -40,9 +40,9 @@ def test_maxwell2d():
     mu = dict(box=1, cyl=1)
 
     stretch = 1 - 1j
-    pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pmlx")
-    pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pmly")
-    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pmlxy")
+    pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pml_x_box")
+    pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pml_y_box")
+    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box")
 
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pmlx, pmly, pmlxy])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pmlx, pmly, pmlxy])
@@ -84,9 +84,9 @@ def test_maxwell2d():
     mu = dict(box=1, cyl=1)
 
     stretch = 1 - 1j
-    pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pmlx")
-    pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pmly")
-    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pmlxy")
+    pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pml_x_box")
+    pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pml_y_box")
+    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box")
 
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pmlx, pmly, pmlxy])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pmlx, pmly, pmlxy])
@@ -118,16 +118,14 @@ def test_maxwell2d_periodic():
 
     thicknesses = OrderedDict(
         {
-            "pml_bottom": lambda0,
             "substrate": lambda0,
             "groove": lambda0,
             "superstrate": lambda0,
-            "pml_top": lambda0,
         }
     )
 
     degree = 1
-    geom = Layered2D(period, thicknesses)
+    geom = Layered2D(period, thicknesses,lambda0)
     geom.build()
     epsilon = dict(
         {
@@ -145,10 +143,10 @@ def test_maxwell2d_periodic():
     )
     stretch = 1 - 1j
     pml_top = PML(
-        "y", stretch=stretch, matched_domain="superstrate", applied_domain="pml_top"
+        "y", stretch=stretch, matched_domain="superstrate", applied_domain="pml_y_superstrate"
     )
     pml_bottom = PML(
-        "y", stretch=stretch, matched_domain="substrate", applied_domain="pml_bottom"
+        "y", stretch=stretch, matched_domain="substrate", applied_domain="pml_y_substrate"
     )
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pml_top, pml_bottom])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pml_top, pml_bottom])

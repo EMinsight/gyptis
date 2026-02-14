@@ -69,7 +69,7 @@ class LayeredBoxPML2D(Geometry):
 
             tx = np.array([-tx0, ty0])
             pmlxm = _add_pml(sx, tx)
-            self.add_physical([pmlxp, pmlxm], "pmlx_" + name)
+            self.add_physical([pmlxp, pmlxm], "pml_x_" + name)
 
             y0 += thickness
 
@@ -80,8 +80,8 @@ class LayeredBoxPML2D(Geometry):
         pmlym = _add_pml(sy, -ty)
 
         names = list(self.layers.keys())
-        self.add_physical(pmlym, "pmly_" + names[0])
-        self.add_physical(pmlyp, "pmly_" + names[-1])
+        self.add_physical(pmlym, "pml_y_" + names[0])
+        self.add_physical(pmlyp, "pml_y_" + names[-1])
 
         s = (self.pml_width[0], self.pml_width[1])
         t = np.array(
@@ -95,15 +95,15 @@ class LayeredBoxPML2D(Geometry):
         pmlxymp = _add_pml(s, (-t[0], t[1]))
         pmlxypm = _add_pml(s, (t[0], -t[1]))
 
-        self.add_physical([pmlxypm, pmlxymm], "pmlxy_" + names[0])
-        self.add_physical([pmlxypp, pmlxymp], "pmlxy_" + names[-1])
+        self.add_physical([pmlxypm, pmlxymm], "pml_xy_" + names[0])
+        self.add_physical([pmlxypp, pmlxymp], "pml_xy_" + names[-1])
 
         self.pmls = []
         for name in names:
-            self.pmls.append("pmlx_" + name)
+            self.pmls.append("pml_x_" + name)
         for name in [names[-1], names[0]]:
-            self.pmls.append("pmly_" + name)
-            self.pmls.append("pmlxy_" + name)
+            self.pmls.append("pml_y_" + name)
+            self.pmls.append("pml_xy_" + name)
 
         self.remove_all_duplicates()
 

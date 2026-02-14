@@ -109,27 +109,25 @@ pmesh = 10
 
 thicknesses = OrderedDict(
     {
-        "pml_bottom": 1 * lambda0,
         "substrate": 2 * lambda0,
         "groove": height * 1.5,
         "superstrate": 2 * lambda0,
-        "pml_top": 1 * lambda0,
     }
 )
 
 mesh_param = dict(
     {
-        "pml_bottom": pmesh * eps_sub**0.5,
+        "pml_y_substrate": pmesh * eps_sub**0.5,
         "substrate": pmesh * eps_sub**0.5,
         "groove": pmesh,
         "rod": pmesh * np.max(eps_rod) ** 0.5,
         "superstrate": pmesh,
-        "pml_top": pmesh,
+        "pml_y_superstrate": pmesh,
     }
 )
 
 
-geom = gy.Layered(2, period, thicknesses)
+geom = gy.Layered(2, period, thicknesses, (lambda0, lambda0))
 groove = geom.layers["groove"]
 substrate = geom.layers["substrate"]
 y0 = geom.y_position["groove"]
@@ -154,7 +152,7 @@ geom.set_mesh_size(mesh_size)
 
 geom.build()
 all_domains = geom.subdomains["surfaces"]
-domains = [k for k in all_domains.keys() if k not in ["pml_bottom", "pml_top"]]
+domains = [k for k in all_domains.keys() if k not in geom.pml_physical]
 
 epsilon = {d: 1 for d in domains}
 mu = {d: 1 for d in domains}
@@ -183,7 +181,7 @@ for jangle, angle in enumerate(angles):
     grating_TM.solve()
     effs_TM = grating_TM.diffraction_efficiencies(2, orders=True)
 
-    ylim = geom.y_position["substrate"], geom.y_position["pml_top"]
+    ylim = geom.y_position["substrate"], geom.y_position["pml_y_superstrate"]
     d = grating_TM.period
     vmin_TM, vmax_TM = -1.5, 1.7
     plt.sca(ax[jangle][0])
@@ -216,19 +214,16 @@ for jangle, angle in enumerate(angles):
     ax[jangle][0].set_title(rf"$\theta = {angle}\degree$")
     ax[jangle][1].set_title(rf"$\theta = {angle}\degree$")
 
+    for m in range(-1, 2):
+        computed_results["TE"][str(angle)][f"R{m}"] = float(effs_TE["R"][m + 2])
+        computed_results["TM"][str(angle)][f"R{m}"] = float(effs_TM["R"][m + 2])
 
-    for m in range(-1,2):
-        computed_results["TE"][str(angle)][f"R{m}"] = float(effs_TE["R"][m+2])
-        computed_results["TM"][str(angle)][f"R{m}"] = float(effs_TM["R"][m+2])
-    
+    for m in range(-2, 2):
+        computed_results["TE"][str(angle)][f"T{m}"] = float(effs_TE["T"][m + 2])
+        computed_results["TM"][str(angle)][f"T{m}"] = float(effs_TM["T"][m + 2])
 
-    for m in range(-2,2):
-        computed_results["TE"][str(angle)][f"T{m}"] = float(effs_TE["T"][m+2])
-        computed_results["TM"][str(angle)][f"T{m}"] = float(effs_TM["T"][m+2])
-
-    computed_results["TE"][str(angle)]["total"] =  effs_TE["B"]
-    computed_results["TM"][str(angle)]["total"] =  effs_TM["B"]
-
+    computed_results["TE"][str(angle)]["total"] = effs_TE["B"]
+    computed_results["TM"][str(angle)]["total"] = effs_TM["B"]
 
 
 divider = make_axes_locatable(ax[0, 0])
@@ -252,6 +247,7 @@ cax.set_title(r"${\rm Re}\, H_z$ (TE)")
 plt.tight_layout()
 plt.subplots_adjust(wspace=-0.1, hspace=-0.3)
 
+
 # Function to display results
 def display_results(ref, comp):
     for pol in ref:
@@ -259,17 +255,30 @@ def display_results(ref, comp):
         for angle in ref[pol]:
             print(f"\nAngle: {angle} degrees")
             # Table header
-            print("{:<6} {:>12} {:>12} {:>12}    {:>12}".format("Index", "Reference", "Computed", "Diff.",  "Rel. diff."))
-            print("-"*63)
+            print(
+                "{:<6} {:>12} {:>12} {:>12}    {:>12}".format(
+                    "Index", "Reference", "Computed", "Diff.", "Rel. diff."
+                )
+            )
+            print("-" * 63)
             for idx in ref[pol][angle]:
                 r_val = ref[pol][angle][idx]
                 c_val = comp[pol][angle].get(idx, 0)
                 diff = c_val - r_val
-                reldiff = diff/r_val * 100 if r_val !=0 else 1
-                if r_val !=0:
-                    print("{:<6} {:>12.6f} {:>12.6f} {:>12.6f} {:>12.4f} %".format(idx, r_val, c_val, diff, reldiff))
+                reldiff = diff / r_val * 100 if r_val != 0 else 1
+                if r_val != 0:
+                    print(
+                        "{:<6} {:>12.6f} {:>12.6f} {:>12.6f} {:>12.4f} %".format(
+                            idx, r_val, c_val, diff, reldiff
+                        )
+                    )
                 else:
-                    print("{:<6} {:>12.6f} {:>12.6f} {:>12.6f}          -- ".format(idx, r_val, c_val, diff))
-                
+                    print(
+                        "{:<6} {:>12.6f} {:>12.6f} {:>12.6f}          -- ".format(
+                            idx, r_val, c_val, diff
+                        )
+                    )
+
+
 # Run display
 display_results(reference_results, computed_results)

@@ -109,6 +109,26 @@ class PeriodicBoundary2DX(dolfin.SubDomain):
         y[1] = x[1]
 
 
+class PeriodicBoundary3DZ(dolfin.SubDomain):
+    def __init__(self, period, eps=dolfin.DOLFIN_EPS, map_tol=1e-10):
+        self.period = period
+        self.eps = eps
+        self.map_tol = map_tol
+        super().__init__(map_tol=map_tol)
+
+    def near(self, x, y):
+        return dolfin.near(x, y, eps=self.eps)
+
+
+    def inside(self, x, on_boundary):
+        return bool(self.near(x[0], -self.period / 2) and on_boundary)
+
+    def map(self, x, y):
+        y[0] = x[0]
+        y[1] = x[1]
+        y[2] = x[2] - self.period
+
+
 class BiPeriodicBoundary3D(dolfin.SubDomain):
     def __init__(self, period, eps=dolfin.DOLFIN_EPS, map_tol=1e-10):
         self.period = period

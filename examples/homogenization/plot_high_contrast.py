@@ -179,11 +179,9 @@ wavelength_min = lambdas_fem.min()
 
 thicknesses = OrderedDict(
     {
-        "pml_bottom": wavelength_max,
         "substrate": wavelength_max,
         "groove": h,
         "superstrate": wavelength_max,
-        "pml_top": wavelength_max,
     }
 )
 
@@ -191,22 +189,21 @@ n_rod = eps_i.real**0.5
 pmesh = 6
 mesh_param = dict(
     {
-        "pml_bottom": 0.7 * pmesh,
         "substrate": pmesh,
         "groove": pmesh,
         "rod": pmesh * n_rod,
         "superstrate": pmesh,
-        "pml_top": 0.7 * pmesh,
     }
 )
 
-geom = gy.Layered(2, d, thicknesses)
+geom = gy.Layered(2, d, thicknesses,pml_thickness=wavelength_max)
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = [geom.add_square(-a / 2, (d - a) / 2 + i * d, 0, a) for i in range(Nlayers)]
 groove, *rod = geom.fragment(groove, rod)
 geom.add_physical(rod, "rod")
 geom.add_physical(groove, "groove")
+[geom.set_size(pml, wavelength_max/pmesh) for pml in geom.pml_physical]
 mesh_size = {d: wavelength_min / param for d, param in mesh_param.items()}
 geom.set_mesh_size(mesh_size)
 geom.build()

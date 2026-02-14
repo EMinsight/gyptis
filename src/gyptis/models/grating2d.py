@@ -40,29 +40,18 @@ class Grating2D(_GratingBase, Simulation):
         function_space = ComplexFunctionSpace(
             geometry.mesh, "CG", degree, constrained_domain=self.periodic_bcs
         )
-        pml_top = PML(
-            "y",
-            stretch=pml_stretch,
-            matched_domain="superstrate",
-            applied_domain="pml_top",
-        )
-        pml_bottom = PML(
-            "y",
-            stretch=pml_stretch,
-            matched_domain="substrate",
-            applied_domain="pml_bottom",
-        )
+
+        names = geometry.domains.keys()
+        pmls_list = init_pmls(names, pml_stretch)
+
         epsilon_coeff = Coefficient(
-            self.epsilon,
-            geometry=geometry,
-            pmls=[pml_top, pml_bottom],
-            degree=degree,
+            self.epsilon, geometry, pmls=pmls_list, degree=degree
         )
-        mu_coeff = Coefficient(
-            self.mu, geometry=geometry, pmls=[pml_top, pml_bottom], degree=degree
-        )
+        mu_coeff = Coefficient(self.mu, geometry, pmls=pmls_list, degree=degree)
+
         coefficients = epsilon_coeff, mu_coeff
-        no_source_domains = ["substrate", "superstrate", "pml_bottom", "pml_top"]
+        no_source_domains = ["substrate", "superstrate"]
+        no_source_domains += geometry.pml_physical
 
         if modal:
             source_domains = []
@@ -196,7 +185,7 @@ class Grating2D(_GratingBase, Simulation):
     def compute_absorption(self, subdomain_absorption=False):
         omega = self.source.pulsation
         doms_no_pml = [
-            z for z in self.epsilon.keys() if z not in ["pml_bottom", "pml_top"]
+            z for z in self.epsilon.keys() if z not in self.geometry.pml_physical
         ]
 
         xi_0, chi_0 = (

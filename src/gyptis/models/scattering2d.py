@@ -32,27 +32,21 @@ class Scatt2D(_ScatteringBase, Simulation):
             assert source.dim == 2
         self.element = element
         self.epsilon, self.mu = init_em_materials(geometry, epsilon, mu)
-
         function_space = ComplexFunctionSpace(geometry.mesh, self.element, degree)
-        pmlx = PML(
-            "x", stretch=pml_stretch, matched_domain="box", applied_domain="pmlx"
-        )
-        pmly = PML(
-            "y", stretch=pml_stretch, matched_domain="box", applied_domain="pmly"
-        )
-        pmlxy = PML(
-            "xy", stretch=pml_stretch, matched_domain="box", applied_domain="pmlxy"
-        )
+
+        names = geometry.domains.keys()
+        pmls_list = init_pmls(names,pml_stretch)
+
 
         epsilon_coeff = Coefficient(
-            self.epsilon, geometry, pmls=[pmlx, pmly, pmlxy], degree=degree
+            self.epsilon, geometry, pmls=pmls_list, degree=degree
         )
         mu_coeff = Coefficient(
-            self.mu, geometry, pmls=[pmlx, pmly, pmlxy], degree=degree
+            self.mu, geometry, pmls=pmls_list, degree=degree
         )
 
         coefficients = epsilon_coeff, mu_coeff
-        no_source_domains = ["box", "pmlx", "pmly", "pmlxy"]
+        no_source_domains = ["box", "pml_x_box", "pml_y_box", "pml_xy_box"]
         if modal:
             source_domains = []
         else:
