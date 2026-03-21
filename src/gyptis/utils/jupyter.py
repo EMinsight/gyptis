@@ -2,19 +2,18 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.3
+# Version: 1.1.4
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
 
-import distutils.core
+import importlib.metadata as metadata
 import os
 import platform
 import sys
 import time
 
 import dolfin
-import pkg_resources
 import psutil
 from IPython.core.magic import Magics, line_magic, magics_class
 from IPython.display import HTML, display
@@ -62,7 +61,7 @@ class VersionTable(Magics):
             ("<code>dolfin</code>", dolfin.__version__),
         ]
         for pkg in p:
-            ver = pkg_resources.get_distribution(pkg).version
+            ver = metadata.version(pkg)
 
             packages.append((f"<code>{pkg}</code>", ver))
 
