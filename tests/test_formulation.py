@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -42,7 +42,9 @@ def test_maxwell2d():
     stretch = 1 - 1j
     pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pml_x_box")
     pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pml_y_box")
-    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box")
+    pmlxy = PML(
+        "xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box"
+    )
 
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pmlx, pmly, pmlxy])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pmlx, pmly, pmlxy])
@@ -86,7 +88,9 @@ def test_maxwell2d():
     stretch = 1 - 1j
     pmlx = PML("x", stretch=stretch, matched_domain="box", applied_domain="pml_x_box")
     pmly = PML("y", stretch=stretch, matched_domain="box", applied_domain="pml_y_box")
-    pmlxy = PML("xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box")
+    pmlxy = PML(
+        "xy", stretch=stretch, matched_domain="box", applied_domain="pml_xy_box"
+    )
 
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pmlx, pmly, pmlxy])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pmlx, pmly, pmlxy])
@@ -125,7 +129,7 @@ def test_maxwell2d_periodic():
     )
 
     degree = 1
-    geom = Layered2D(period, thicknesses,lambda0)
+    geom = Layered2D(period, thicknesses, lambda0)
     geom.build()
     epsilon = dict(
         {
@@ -143,10 +147,16 @@ def test_maxwell2d_periodic():
     )
     stretch = 1 - 1j
     pml_top = PML(
-        "y", stretch=stretch, matched_domain="superstrate", applied_domain="pml_y_superstrate"
+        "y",
+        stretch=stretch,
+        matched_domain="superstrate",
+        applied_domain="pml_y_superstrate",
     )
     pml_bottom = PML(
-        "y", stretch=stretch, matched_domain="substrate", applied_domain="pml_y_substrate"
+        "y",
+        stretch=stretch,
+        matched_domain="substrate",
+        applied_domain="pml_y_substrate",
     )
     epsilon_coeff = Coefficient(epsilon, geometry=geom, pmls=[pml_top, pml_bottom])
     mu_coeff = Coefficient(mu, geometry=geom, pmls=[pml_top, pml_bottom])

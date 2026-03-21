@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -35,15 +35,12 @@ class Scatt2D(_ScatteringBase, Simulation):
         function_space = ComplexFunctionSpace(geometry.mesh, self.element, degree)
 
         names = geometry.domains.keys()
-        pmls_list = init_pmls(names,pml_stretch)
-
+        pmls_list = init_pmls(names, pml_stretch)
 
         epsilon_coeff = Coefficient(
             self.epsilon, geometry, pmls=pmls_list, degree=degree
         )
-        mu_coeff = Coefficient(
-            self.mu, geometry, pmls=pmls_list, degree=degree
-        )
+        mu_coeff = Coefficient(self.mu, geometry, pmls=pmls_list, degree=degree)
 
         coefficients = epsilon_coeff, mu_coeff
         no_source_domains = ["box", "pml_x_box", "pml_y_box", "pml_xy_box"]

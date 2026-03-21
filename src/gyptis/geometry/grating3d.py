@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -12,7 +12,7 @@ from .geometry import *
 class Layered3D(Geometry):
     def __init__(
         self,
-        period = (1,1),
+        period=(1, 1),
         thicknesses=OrderedDict(),
         pml_thickness=(1, 1),
         **kwargs,

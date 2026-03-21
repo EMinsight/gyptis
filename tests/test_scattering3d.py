@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -11,7 +11,6 @@
 Introduction to electromagnetic scattering: tutorial
 https://www.osapublishing.org/josaa/fulltext.cfm?uri=josaa-35-1-163&id=380136
 """
-
 
 import numpy as np
 import pytest

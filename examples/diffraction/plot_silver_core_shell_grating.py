@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 """
@@ -11,7 +11,6 @@ Core shell nanorod grating
 
 Diffraction by a grating of silver-coated circular nanocylinders on a dielectric substrate.
 """
-
 
 from collections import OrderedDict
 from pprint import pprint

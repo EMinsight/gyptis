@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -194,7 +194,6 @@ class Geometry:
         self.model.removePhysicalName(name)
         self.model.setPhysicalName(dim, self.subdomains[dicname][name], name)
         return num
-
 
     def dimtag(self, idf, dim=None):
         """Convert an integer or list of integer to gmsh DimTag notation.
@@ -523,6 +522,7 @@ class Geometry:
     @property
     def msh_file(self):
         return os.path.join(self.data_dir, self.mesh_name)
+
     @property
     def geo_file(self):
         return os.path.join(self.data_dir, self.model_name + ".geo_unrolled")

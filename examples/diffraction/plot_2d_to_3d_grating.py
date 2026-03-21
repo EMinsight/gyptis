@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 """
@@ -11,6 +11,7 @@
 
 Check results from 3D simulation against 2D.
 """
+
 # sphinx_gallery_thumbnail_number = 2
 
 
@@ -45,7 +46,7 @@ gy.dolfin.parameters["form_compiler"]["quadrature_degree"] = 4
 ##############################################################################
 # The thicknesses of the different layers are specified with an
 # ``OrderedDict`` object **from bottom to top**:
-pml_thickness = lambda0,lambda0
+pml_thickness = lambda0, lambda0
 thicknesses = OrderedDict(
     {
         "substrate": lambda0,
@@ -74,11 +75,11 @@ mesh_param = dict(
 
 def build_geometry(dim):
     if dim == 2:
-        geom = gy.Layered(2, dy, thicknesses,pml_thickness)
+        geom = gy.Layered(2, dy, thicknesses, pml_thickness)
         y0 = geom.y_position["groove"]
         pillar = geom.add_rectangle(-l_pillar / 2, y0, 0, l_pillar, h)
     else:
-        geom = gy.Layered(3, (dx, dy), thicknesses,pml_thickness)
+        geom = gy.Layered(3, (dx, dy), thicknesses, pml_thickness)
         z0 = geom.z_position["groove"]
         pillar = geom.add_box(-dx / 2, -l_pillar / 2, z0, dx, l_pillar, h)
     groove = geom.layers["groove"]
@@ -133,6 +134,7 @@ def init_simu(geom, polarization):
 ######################################################################
 # Main function
 
+
 def run(polarization):
     t2Dmesh = -time.time()
     geom2D = build_geometry(2)
@@ -185,7 +187,7 @@ def run(polarization):
         print(
             f"T({i1}) {spacex}            {T2D[k]:.5f}      {T3D[k]:.5f}      {rel_err:.3f} %"
         )
-    
+
     rel_err = abs(1 - sum(T2D) / sum(T3D)) * 100
     print(f"T                 {sum(T2D):.5f}      {sum(T3D):.5f}      {rel_err:.3f} %")
     print()
@@ -194,8 +196,10 @@ def run(polarization):
         i1 = f"+{i}" if i > 0 else i
         spacex = "" if i != 0 else " "
         rel_err = abs(1 - R2D[k] / R3D[k]) * 100
-        print(f"R({i1}) {spacex}            {R2D[k]:.5f}      {R3D[k]:.5f}      {rel_err:.3f} %")
-    
+        print(
+            f"R({i1}) {spacex}            {R2D[k]:.5f}      {R3D[k]:.5f}      {rel_err:.3f} %"
+        )
+
     rel_err = abs(1 - sum(R2D) / sum(R3D)) * 100
     print(f"R                 {sum(R2D):.5f}      {sum(R3D):.5f}      {rel_err:.3f} %")
     print()
@@ -211,14 +215,22 @@ def run(polarization):
     print("                    2D           3D        reduction ")
     print("-------------------------------------------------------")
     print("Number of DOF")
-    print(f"                   {simu2D.ndof}        {simu3D.ndof}      x{simu3D.ndof/simu2D.ndof:.1f}  ")
+    print(
+        f"                   {simu2D.ndof}        {simu3D.ndof}      x{simu3D.ndof/simu2D.ndof:.1f}  "
+    )
     print()
     print("                    2D           3D        speedup ")
     print("-------------------------------------------------------")
     print("CPU time")
-    print(f"mesh               {t2Dmesh:.3f}s       {t3Dmesh:.3f}s      x{t3Dmesh/t2Dmesh:.1f}")
-    print(f"solve              {t2Dsolve:.3f}s       {t3Dsolve:.3f}s     x{t3Dsolve/t2Dsolve:.1f}")
-    print(f"efficiencies       {t2Deff:.3f}s       {t3Deff:.3f}s     x{t3Deff/t2Deff:.1f}")
+    print(
+        f"mesh               {t2Dmesh:.3f}s       {t3Dmesh:.3f}s      x{t3Dmesh/t2Dmesh:.1f}"
+    )
+    print(
+        f"solve              {t2Dsolve:.3f}s       {t3Dsolve:.3f}s     x{t3Dsolve/t2Dsolve:.1f}"
+    )
+    print(
+        f"efficiencies       {t2Deff:.3f}s       {t3Deff:.3f}s     x{t3Deff/t2Deff:.1f}"
+    )
 
     utot = simu2D.solution["total"].real
     gy.plot(utot)

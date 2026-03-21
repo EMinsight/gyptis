@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -12,7 +12,6 @@ Local density of states
 
 Calculation of the Green's function and LDOS in 2D finite photonic crystals.
 """
-
 
 # sphinx_gallery_thumbnail_number = 2
 
@@ -116,14 +115,14 @@ geom = create_geometry(
 )
 
 
-source_pos = 0,0
+source_pos = 0, 0
 
 epsilon = {d: n_cyl**2 for d in geom.domains}
 epsilon["box"] = n_bg**2
 
 ldos = 0
 for comp in range(2):
-        
+
     # comp = 1
     angle = comp * np.pi / 2
 
@@ -138,7 +137,6 @@ for comp in range(2):
     )
 
     s = gy.Scattering(geom, epsilon, source=dipole, degree=2, polarization="TE")
-
 
     s.solve()
 
@@ -193,8 +191,6 @@ def _local_density_of_states_TE(self, x, y):
     print("=======================")
     print(f"Coordinate ({x}, {y})")
     # greens_tensor = np.zeros((2,2), dtype=complex)
-    
-
 
     trace_greens_tensor = 0
     for comp in [0, 1]:

@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
 
-from .geometry import *
 import copy
+
+from .geometry import *
 
 
 class LayeredBoxPML2D(Geometry):
@@ -29,7 +30,6 @@ class LayeredBoxPML2D(Geometry):
             "pml_width": pml_width,
             **kwargs,
         }
-
 
         self.width = width
         self.thicknesses = thicknesses
@@ -125,7 +125,6 @@ class LayeredBoxPML2D(Geometry):
         self._initial_subdomains_entities = copy.deepcopy(self.subdomains_entities)
         self._initial_subdomains = copy.deepcopy(self.subdomains)
 
-
     @property
     def new_subdomains(self):
         initial = self._initial_subdomains
@@ -136,14 +135,12 @@ class LayeredBoxPML2D(Geometry):
             initial_sub = initial[section]
             current_sub = current[section]
 
-            new_items = {k: v for k, v in current_sub.items()
-                        if k not in initial_sub}
+            new_items = {k: v for k, v in current_sub.items() if k not in initial_sub}
 
             # always keep the section, even if empty
             diff[section] = new_items
 
         return diff
-
 
     def make_layer(self, y_position, thickness):
         return self.add_rectangle(-self.width / 2, y_position, 0, self.width, thickness)

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -110,7 +110,7 @@ class LayeredBoxPML3D(Geometry):
                         _pml = self._add_box_translate(spml, t)
                         _pmls.append(_pml)
                     self.add_physical(_pmls, "pml_yz_" + names[j])
-                    
+
                     spml = (self.pml_width[0], self.pml_width[1], self.pml_width[2])
                     _pmls = []
                     for i in [-1, 1]:
@@ -124,10 +124,10 @@ class LayeredBoxPML3D(Geometry):
 
         for sub, num in self.subdomains_entities["volumes"].items():
             self.add_physical(num, sub)
-        
+
         self._initial_setup = self._get_initial_setup()
         self._subdomains_ids = self._initial_setup[1]
-    
+
     @property
     def subdomains_ids(self):
         return self._subdomains_ids
@@ -165,7 +165,6 @@ class LayeredBoxPML3D(Geometry):
         lengths = [len(sublist) for sublist in all_subdomains]
         all_subdomains_name = list(self.subdomains_entities["volumes"].keys())
         return all_subdomains_name, all_subdomains_flat, lengths
-    
 
     def _restore_initial_subdomains(self, subdomain_ids):
         all_subdomains_name, _, lengths = self._initial_setup
@@ -178,9 +177,11 @@ class LayeredBoxPML3D(Geometry):
             self.add_physical(num, name)
 
 
-import gyptis as gy
 from collections import OrderedDict
+
 import matplotlib.pyplot as plt
+
+import gyptis as gy
 
 plt.close("all")
 plt.ion()
@@ -218,8 +219,8 @@ ysub = geom3D.y_position["superstrate"]
 design_size = 4
 
 wg_width = 1
-wg_depth1 = geom3D.box_size[2]/2 - design_size/2
-wg_depth2 = geom3D.box_size[0]/2 - design_size/2
+wg_depth1 = geom3D.box_size[2] / 2 - design_size / 2
+wg_depth2 = geom3D.box_size[0] / 2 - design_size / 2
 
 # core1 = geom3D.add_box(
 #     -wg_width / 2,
@@ -248,11 +249,10 @@ wg_depth2 = geom3D.box_size[0]/2 - design_size/2
 # )
 
 
-
 core1 = geom3D.add_box(
     -wg_width / 2,
     ysub,
-    -geom3D.box_size[2]/2,
+    -geom3D.box_size[2] / 2,
     wg_width,
     wg_thickness,
     wg_depth1,
@@ -261,18 +261,17 @@ core1 = geom3D.add_box(
 core2 = geom3D.add_box(
     -wg_width / 2,
     ysub,
-    design_size/2,
+    design_size / 2,
     wg_width,
     wg_thickness,
     wg_depth1,
 )
 
 
-
 design = geom3D.add_box(
-    -design_size/2,
+    -design_size / 2,
     ysub,
-    -design_size/2,
+    -design_size / 2,
     design_size,
     wg_thickness,
     design_size,
@@ -291,14 +290,13 @@ design = geom3D.add_box(
 # geom3D.add_physical([fragments[0], fragments[4]], "pml_z_core")
 
 
-
-fragments = geom3D.fragment([core1,design,core2], geom3D.subdomains_ids)
+fragments = geom3D.fragment([core1, design, core2], geom3D.subdomains_ids)
 core1 = fragments[0]
 design = fragments[1]
 core2 = fragments[2]
 geom3D.subdomains_ids = fragments[3:]
 
-geom3D.add_physical([core1,core2], "core")
+geom3D.add_physical([core1, core2], "core")
 geom3D.add_physical([design], "design")
 
 print("Building 3D mesh")

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 """
@@ -11,6 +11,7 @@
 
 Example of a dielectric bi-periodic diffraction grating.
 """
+
 # sphinx_gallery_thumbnail_number = 2
 
 
@@ -77,7 +78,7 @@ mesh_param = dict(
 ##############################################################################
 # Let's create the geometry using the :class:`~gyptis.Layered`
 # class:
-geom = gy.Layered(3, (dx, dy), thicknesses,lambda0)
+geom = gy.Layered(3, (dx, dy), thicknesses, lambda0)
 z0 = geom.z_position["groove"]  # + h/10
 # pillar = geom.add_box(-l_pillar / 2, -l_pillar / 2, z0, l_pillar, l_pillar, h)
 pillar = geom.add_box(-dx / 2, -l_pillar / 2, z0, dx, l_pillar, h)

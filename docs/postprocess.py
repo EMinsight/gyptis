@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 """
@@ -12,6 +12,7 @@ Post-processes HTML and Latex files output by Sphinx.
 MODE is either 'html' or 'tex'.
 
 """
+
 from __future__ import absolute_import, division, print_function
 
 import io

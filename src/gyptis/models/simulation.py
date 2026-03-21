@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -42,7 +42,8 @@ def init_em_materials(geometry, epsilon=None, mu=None):
     mu = _complexify_items(mu)
     return epsilon, mu
 
-def init_pmls(names,pml_stretch):
+
+def init_pmls(names, pml_stretch):
     pmls_list = []
     for name in names:
         if name.startswith("pml"):
@@ -59,6 +60,7 @@ def init_pmls(names,pml_stretch):
             )
             pmls_list.append(pml)
     return pmls_list
+
 
 class Simulation:
     def __init__(self, geometry, formulation=None, direct=True, solver=None):

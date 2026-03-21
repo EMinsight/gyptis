@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -34,10 +34,9 @@ class Waveguide2D(Simulation):
         element = dolfin.MixedElement([Element1, Element2])
 
         function_space = ComplexFunctionSpace(geometry.mesh, element)
-        
 
         names = geometry.domains.keys()
-        pmls_list = init_pmls(names,pml_stretch)
+        pmls_list = init_pmls(names, pml_stretch)
         degree_mat = max(degree)
 
         epsilon_coeff = Coefficient(

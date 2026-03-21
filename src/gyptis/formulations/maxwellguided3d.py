@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
-# License: GPLv3
+# This file is part of gyptis
+# Version: 1.1.3
+# License: MIT
+# See the documentation at gyptis.gitlab.io
 
 
 from .maxwell3d import *
@@ -43,7 +46,7 @@ class MaxwellGuided3D(Maxwell3D):
         # a₂(u,v) = ∫_Ω (ẑ × v)·[μ̿⁻¹ (ẑ × u)] dV
         form.append(inner(inv_mu * cross(zvec, u), cross(zvec, v)))
         # m(e,v) = ∫_Ω v·[ε̿(r)u] dV
-        form.append(-k0**2 * inner(epsilon * u, v))
+        form.append(-(k0**2) * inner(epsilon * u, v))
         return [f * self.dx(domain) for f in form]
 
     def _weak(self, u, v):
@@ -54,9 +57,7 @@ class MaxwellGuided3D(Maxwell3D):
                 continue
             else:
                 formulation += form
-        return (
-            [f.real + f.imag for f in formulation]
-        )
+        return [f.real + f.imag for f in formulation]
 
     @property
     def weak(self):

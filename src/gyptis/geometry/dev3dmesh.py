@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
-# License: GPLv3
+# This file is part of gyptis
+# Version: 1.1.3
+# License: MIT
+# See the documentation at gyptis.gitlab.io
 
 
 import gmsh
@@ -43,8 +46,8 @@ shared_tags = list(set([tag for tag in all_tags if all_tags.count(tag) > 1]))
 for i, entities in enumerate(out_map):
     tags = [e[1] for e in entities if e[1] in unique_tags]
     if tags:
-        gmsh.model.addPhysicalGroup(3, tags, i+1)
-        gmsh.model.setPhysicalName(3, i+1, names[i])
+        gmsh.model.addPhysicalGroup(3, tags, i + 1)
+        gmsh.model.setPhysicalName(3, i + 1, names[i])
 
 if shared_tags:
     gmsh.model.addPhysicalGroup(3, shared_tags, 999)

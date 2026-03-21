@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -118,7 +118,6 @@ class PeriodicBoundary3DZ(dolfin.SubDomain):
 
     def near(self, x, y):
         return dolfin.near(x, y, eps=self.eps)
-
 
     def inside(self, x, on_boundary):
         return bool(self.near(x[0], -self.period / 2) and on_boundary)

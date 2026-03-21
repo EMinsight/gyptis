@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -127,7 +127,7 @@ def test_grating2dpec(polarization, degree):
     epsilon = dict({"substrate": 1.7, "groove": eps_groove, "superstrate": 1})
     mu = dict({"substrate": 1.2, "groove": mu_groove, "superstrate": 1})
 
-    geom = Layered2D(period, thicknesses,wavelength)
+    geom = Layered2D(period, thicknesses, wavelength)
 
     yc = geom.y_position["groove"] + thicknesses["groove"] / 2
     diff = geom.add_ellipse(0, yc, 0, w / 2, h / 2)

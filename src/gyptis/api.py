@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -101,7 +101,9 @@ class Layered(Geometry):
 
     """
 
-    def __new__(cls, dim=3, period=None, thicknesses=None, pml_thickness=None, **kwargs):
+    def __new__(
+        cls, dim=3, period=None, thicknesses=None, pml_thickness=None, **kwargs
+    ):
         _check_dimension(dim)
         _Class = Layered3D if dim == 3 else Layered2D
         return _Class(period, thicknesses, pml_thickness, **kwargs)

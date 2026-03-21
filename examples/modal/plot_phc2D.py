@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -12,7 +12,6 @@ Band diagram of 2D photonic crystal
 
 Calculation of the band diagram of a two-dimensional photonic crystal.
 """
-
 
 # sphinx_gallery_thumbnail_number = -1
 

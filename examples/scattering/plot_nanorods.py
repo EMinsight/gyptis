@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 """
@@ -40,7 +40,7 @@ def build_geo():
     )
     box = geom.box
     rods = [geom.add_circle(-N / 2 * d + i * d, 0, 0, R) for i in range(N)]
-    box,*rods = geom.fragment(box, rods)
+    box, *rods = geom.fragment(box, rods)
     geom.add_physical(box, "box")
     geom.add_physical(rods, "rods")
     [geom.set_size(pml, lmin * 0.7) for pml in geom.pmls]
@@ -90,8 +90,6 @@ def plot_solution(s, title):
     plt.ylabel("y (nm)")
     plt.title(title)
     plt.tight_layout()
-
-
 
 
 ##############################################################################

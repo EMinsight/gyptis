@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -14,17 +14,14 @@ Periodically-poled lithium niobate ridge waveguide.
 
 """
 
-
 from collections import OrderedDict
 
 import matplotlib.pyplot as plt
 import numpy as np
+import refidx as rd
 from scipy.spatial.transform import Rotation
 
 import gyptis as gy
-import refidx as rd
-
-
 
 ##############################################################################
 # Anisotropic refractive index of LN
@@ -62,6 +59,7 @@ def LN_o(wl, T=25):
         - a[5] * wl**2
     )
     return n
+
 
 #################################################################
 # Silicon dioxide refractive index
@@ -159,6 +157,7 @@ def build_epsilon(wl):
     )
     return epsilon
 
+
 plt.figure()
 plt.plot(wls * 1000, LN_o(wls), "-", c="#be4848", label="$n_o$")
 plt.plot(wls * 1000, LN_e(wls), "-", c="#489bbe", label="$n_e$")
@@ -174,9 +173,10 @@ plt.tight_layout()
 ########################################
 # Eigensolver
 
+
 def run(wls):
     simus = []
-    effective_indices = np.zeros((Nwl, n_eig),dtype=complex)
+    effective_indices = np.zeros((Nwl, n_eig), dtype=complex)
     for i, wl in enumerate(wls):
 
         epsilon = build_epsilon(wl)
@@ -198,22 +198,20 @@ def run(wls):
         modes = simu.solution["eigenvectors"]
         neff = evs / wavenumber
         effective_indices[i, : len(neff)] = neff
-        effective_indices[i, len(neff) :] = np.nan +1j*np.nan
+        effective_indices[i, len(neff) :] = np.nan + 1j * np.nan
         simus.append(simu)
     return simus, effective_indices
 
 
 simus_wls, effective_indices_wls = run(wls)
-effective_indices_wls[effective_indices_wls.imag>1e-6]= np.nan +1j*np.nan
+effective_indices_wls[effective_indices_wls.imag > 1e-6] = np.nan + 1j * np.nan
 
 
 ##############################################################################
 # Recover results given in :cite:p:`mckenna2022` (Fig. 1c).
 
 
-data_fig = np.loadtxt(
-    f"data_LN.csv", delimiter=",", skiprows=1, usecols=[0, 1]
-).T
+data_fig = np.loadtxt(f"data_LN.csv", delimiter=",", skiprows=1, usecols=[0, 1]).T
 
 plt.figure()
 plt.plot(data_fig[0], data_fig[1], ".k", ms=1, label="reference")

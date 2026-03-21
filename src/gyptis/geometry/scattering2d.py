@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -111,4 +111,3 @@ class BoxPML2D(Geometry):
                 self.calc_bnds = bnds[-2]
                 self.add_physical(self.calc_bnds, "calc_bnds", dim=1)
         super().build(*args, **kwargs)
-

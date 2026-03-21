@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -12,7 +12,6 @@ Nanorod
 
 Scattering by a silver nanorod and comparison with analytical solution.
 """
-
 
 import matplotlib.pyplot as plt
 import numpy as np

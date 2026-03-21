@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -12,7 +12,6 @@ High contrast homogenization
 
 Metamaterial with high index inclusions
 """
-
 
 # sphinx_gallery_thumbnail_number = 2
 
@@ -196,14 +195,14 @@ mesh_param = dict(
     }
 )
 
-geom = gy.Layered(2, d, thicknesses,pml_thickness=wavelength_max)
+geom = gy.Layered(2, d, thicknesses, pml_thickness=wavelength_max)
 groove = geom.layers["groove"]
 y0 = geom.y_position["groove"] + thicknesses["groove"] / 2
 rod = [geom.add_square(-a / 2, (d - a) / 2 + i * d, 0, a) for i in range(Nlayers)]
 groove, *rod = geom.fragment(groove, rod)
 geom.add_physical(rod, "rod")
 geom.add_physical(groove, "groove")
-[geom.set_size(pml, wavelength_max/pmesh) for pml in geom.pml_physical]
+[geom.set_size(pml, wavelength_max / pmesh) for pml in geom.pml_physical]
 mesh_size = {d: wavelength_min / param for d, param in mesh_param.items()}
 geom.set_mesh_size(mesh_size)
 geom.build()

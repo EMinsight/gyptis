@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -14,9 +14,6 @@ from math import e, pi
 
 import petsc4py
 from scipy.constants import c, epsilon_0, mu_0
-
-
-import sys
 
 # Auto-inject pkg_resources compatibility shim for Python 3.12+
 if sys.version_info >= (3, 12):

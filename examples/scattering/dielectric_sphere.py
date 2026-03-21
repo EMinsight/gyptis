@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -13,7 +13,6 @@ A scattering simulation in 3D
 
 In this example we will study the scattering of a plane wave by a nanosphere
 """
-
 
 ############################################################################
 # Reference results are taken from :cite:p:`Frezza2018`.

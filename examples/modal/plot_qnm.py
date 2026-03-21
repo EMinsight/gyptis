@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -15,7 +15,6 @@ Reconstruction using a quasinormlal mode expansion applied to the scattering by
 a plane wave and the computaion of the local density of states.
 
 """
-
 
 # sphinx_gallery_thumbnail_number = -1
 

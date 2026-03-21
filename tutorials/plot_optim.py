@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -14,7 +14,6 @@ Optimizing a lens
 
 In this tutorial, we will perform a topology optimization of a lens
 """
-
 
 ############################################################################
 # We first need to import the Python packages

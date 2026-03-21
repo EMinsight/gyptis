@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -52,7 +52,7 @@ class Grating3D(_GratingBase, Simulation):
 
         coefficients = epsilon_coeff, mu_coeff
         no_source_domains = ["substrate", "superstrate"]
-        
+
         no_source_domains += geometry.pml_physical
         source_domains = [
             dom for dom in geometry.domains if dom not in no_source_domains

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
 # This file is part of gyptis
-# Version: 1.1.2
+# Version: 1.1.3
 # License: MIT
 # See the documentation at gyptis.gitlab.io
 
@@ -15,7 +15,6 @@ A scattering simulation in 2D
 
 In this example we will study the diffraction of a plane wave by a nanorod
 """
-
 
 ############################################################################
 # We first need to import the Python packages

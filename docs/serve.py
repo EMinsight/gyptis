@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Author: Benjamin Vial
-# License: GPLv3
+# This file is part of gyptis
+# Version: 1.1.3
+# License: MIT
+# See the documentation at gyptis.gitlab.io
 
 
 import http.server
